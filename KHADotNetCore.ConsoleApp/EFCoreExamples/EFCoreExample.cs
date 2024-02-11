@@ -57,7 +57,7 @@ namespace KHADotNetCore.ConsoleApp.EFCoreExamples
             };
             db.Blogs.Add(blog);
 
-            int result = db.SaveChanges();]
+            int result = db.SaveChanges();
             string message = result > 0 ? "Saving successful." : "saving failed";
             Console.WriteLine(message);
         }
