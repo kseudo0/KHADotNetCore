@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace KHADotNetCore.ConsoleApp.Models
 {
+    [Table("Tbl_Blog")]
     public class BlogModel
     {
+        [Key]
         public int BlogId { get; set; }
         public string BlogTitle { get; set; }
         public string BlogAuthor { get; set; }
