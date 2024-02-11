@@ -5,31 +5,29 @@ namespace KHADotNetCore.ConsoleApp.AdoDotNetExamples
 {
     public class AdoDotNetExample
     {
-        private SqlConnectionStringBuilder sqlConnectionStringBuilder;
-        private SqlConnection sqlConnection;
-
-        private string query = "";
+        private readonly SqlConnection _sqlConnection;
+        private string query = String.Empty;
         public AdoDotNetExample()
         {
-            sqlConnectionStringBuilder = new SqlConnectionStringBuilder();
+            SqlConnectionStringBuilder sqlConnectionStringBuilder = new SqlConnectionStringBuilder();
             sqlConnectionStringBuilder.DataSource = "DESKTOP-V1H7OM6";
             sqlConnectionStringBuilder.InitialCatalog = "TestDb";
             sqlConnectionStringBuilder.UserID = "sa";
             sqlConnectionStringBuilder.Password = "KaungKaung";
 
-            sqlConnection = new SqlConnection(sqlConnectionStringBuilder.ConnectionString);
+            _sqlConnection = new SqlConnection(sqlConnectionStringBuilder.ConnectionString);
         }
 
         public void Read()
         {
             query = "SELECT * FROM Tbl_Blog";
 
-            sqlConnection.Open();
-            SqlCommand cmd = new SqlCommand(query, sqlConnection);
+            _sqlConnection.Open();
+            SqlCommand cmd = new SqlCommand(query, _sqlConnection);
             SqlDataAdapter adapter = new SqlDataAdapter(cmd);
             DataTable dt = new DataTable();
             adapter.Fill(dt);
-            sqlConnection.Close();
+            _sqlConnection.Close();
 
             //DataSet => accept many tables
             //DataTable => each table
@@ -49,13 +47,13 @@ namespace KHADotNetCore.ConsoleApp.AdoDotNetExamples
         {
             query = "SELECT * FROM Tbl_Blog WHERE BlogId = @BlogId";
 
-            sqlConnection.Open();
-            SqlCommand cmd = new SqlCommand(query, sqlConnection);
+            _sqlConnection.Open();
+            SqlCommand cmd = new SqlCommand(query, _sqlConnection);
             cmd.Parameters.AddWithValue("@BlogId", id);
             SqlDataAdapter adapter = new SqlDataAdapter(cmd);
             DataTable dt = new DataTable();
             adapter.Fill(dt);
-            sqlConnection.Close();
+            _sqlConnection.Close();
 
             if (dt.Rows.Count == 0)
             {
@@ -88,13 +86,13 @@ namespace KHADotNetCore.ConsoleApp.AdoDotNetExamples
                         @BlogContent
                     )";
 
-            sqlConnection.Open();
-            SqlCommand cmd = new SqlCommand(query, sqlConnection);
+            _sqlConnection.Open();
+            SqlCommand cmd = new SqlCommand(query, _sqlConnection);
             cmd.Parameters.AddWithValue("@BlogTitle", title);
             cmd.Parameters.AddWithValue("@BlogAuthor", author);
             cmd.Parameters.AddWithValue("@BlogContent", content);
             int result = cmd.ExecuteNonQuery();
-            sqlConnection.Close();
+            _sqlConnection.Close();
 
             string message = result > 0 ? "Saving Successful." : "Saving Failed";
             Console.WriteLine(message);
@@ -108,14 +106,14 @@ namespace KHADotNetCore.ConsoleApp.AdoDotNetExamples
                     [BlogContent] = @BlogContent
                     WHERE BlogId = @BlogId";
 
-            sqlConnection.Open();
-            SqlCommand cmd = new SqlCommand(query, sqlConnection);
+            _sqlConnection.Open();
+            SqlCommand cmd = new SqlCommand(query, _sqlConnection);
             cmd.Parameters.AddWithValue("@BlogTitle", title);
             cmd.Parameters.AddWithValue("@BlogAuthor", author);
             cmd.Parameters.AddWithValue("@BlogContent", content);
             cmd.Parameters.AddWithValue("@BlogId", id);
             int result = cmd.ExecuteNonQuery();
-            sqlConnection.Close();
+            _sqlConnection.Close();
 
             string message = result > 0 ? "Updating Successful." : "Updating Failed";
             Console.WriteLine(message);
@@ -125,11 +123,11 @@ namespace KHADotNetCore.ConsoleApp.AdoDotNetExamples
         {
             query = @"DELETE FROM [dbo].[Tbl_Blog] WHERE BlogId = @BlogId";
 
-            sqlConnection.Open();
-            SqlCommand cmd = new SqlCommand(query, sqlConnection);
+            _sqlConnection.Open();
+            SqlCommand cmd = new SqlCommand(query, _sqlConnection);
             cmd.Parameters.AddWithValue("@BlogId", id);
             int result = cmd.ExecuteNonQuery();
-            sqlConnection.Close();
+            _sqlConnection.Close();
 
             string message = result > 0 ? "Delete Successful." : "Delete Failed";
             Console.WriteLine(message);
